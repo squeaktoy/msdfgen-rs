@@ -193,8 +193,8 @@ fn build_library(src_dir: &Path, lib_dir: &Path) {
         .files(extra_srcs)
         .out_dir(lib_dir);
 
-    if let Some(stdlib) = detect_stdlib(&target) {
-        build.cpp_set_stdlib(Some(stdlib.as_str()));
+    if target.contains("-darwin") {
+        build.cpp_set_stdlib("c++");
     }
 
     /*
@@ -278,6 +278,7 @@ fn detect_sysroot(target: &str) -> Result<Option<PathBuf>, String> {
     }
 }
 
+#[cfg(feature = "bindgen")]
 fn detect_stdlib(target: &str) -> Option<String> {
     use std::env;
 
@@ -288,7 +289,7 @@ fn detect_stdlib(target: &str) -> Option<String> {
     }
 
     if target.contains("-ios") || target.contains("-darwin") {
-        return Some("c++".into());
+        return Some("libc++".into());
     }
 
     None
