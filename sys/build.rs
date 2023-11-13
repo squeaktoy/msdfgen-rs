@@ -278,7 +278,6 @@ fn detect_sysroot(target: &str) -> Result<Option<PathBuf>, String> {
     }
 }
 
-#[cfg(feature = "bindgen")]
 fn detect_stdlib(target: &str) -> Option<String> {
     use std::env;
 
