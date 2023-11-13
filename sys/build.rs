@@ -288,7 +288,7 @@ fn detect_stdlib(target: &str) -> Option<String> {
     }
 
     if target.contains("-ios") || target.contains("-darwin") {
-        return Some("libc++".into());
+        return Some("c++".into());
     }
 
     None
