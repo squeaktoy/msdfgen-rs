@@ -165,6 +165,7 @@ fn build_library(src_dir: &Path, lib_dir: &Path) {
     .map(|name| core_src_dir.join(name));
 
     let profile = std::env::var("PROFILE").expect("PROFILE is set by cargo.");
+    let target = std::env::var("TARGET").expect("TARGET is set by cargo.");
 
     let mut build = cc::Build::new();
 
@@ -191,6 +192,10 @@ fn build_library(src_dir: &Path, lib_dir: &Path) {
         .files(core_srcs)
         .files(extra_srcs)
         .out_dir(lib_dir);
+
+    if let Some(stdlib) = detect_stdlib(&target) {
+        build.cpp_set_stdlib(Some(stdlib.as_str()));
+    }
 
     /*
     if cfg!(feature = "libcxx") {
